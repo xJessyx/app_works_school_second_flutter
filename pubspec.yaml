@@ -17,3 +17,15 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/Logo.png
+    - assets/cat.jpg
+    - assets/cat2.jpg
+    - assets/dog.jpg
+    - assets/bird.jpg
+    - assets/big_cat1.jpg
+    - assets/big_cat2.jpg
+    - assets/big_cat3.jpg
+    - assets/big_cat4.jpg
+    - assets/big_cat5.jpg
