@@ -292,8 +292,55 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
+
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  int _counter = 0;
+  bool _isPressed = false;
+  bool _button1State = false;
+  bool _button2State = false;
+  bool _button3State = false;
+
+  void _onButton1Pressed() {
+    setState(() {
+      _button1State = true;
+      _button2State = false;
+      _button3State = false;
+    });
+  }
+
+  void _onButton2Pressed() {
+    setState(() {
+      _button1State = false;
+      _button2State = true;
+      _button3State = false;
+    });
+  }
+
+  void _onButton3Pressed() {
+    setState(() {
+      _button1State = false;
+      _button2State = false;
+      _button3State = true;
+    });
+  }
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _decreaseCounter() {
+    setState(() {
+      _counter--;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -357,38 +404,56 @@ class DetailPage extends StatelessWidget {
                         indent: 20,
                         endIndent: 20,
                       ),
-                      Row(
-                        children: [
-                          const SizedBox(width: 10.0, height: 40.0),
-                          Container(
-                            color: Colors.transparent,
-                            child: const Text('顏色',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          ),
-                          const SizedBox(
-                            width: 20.0,
-                            height: 25.0,
-                            child: VerticalDivider(
-                              color: Colors.grey,
-                              thickness: 1.5,
+                      Material(
+                        color: Colors.transparent,
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 10.0, height: 40.0),
+                            Container(
+                              color: Colors.transparent,
+                              child: const Text('顏色',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  )),
                             ),
-                          ),
-                          const SizedBox(width: 10.0, height: 40.0),
-                          Container(
-                            width: 20,
-                            height: 20,
-                            color: Colors.green,
-                          ),
-                          const SizedBox(width: 10.0, height: 40.0),
-                          Container(
-                            width: 20,
-                            height: 20,
-                            color: Colors.blue,
-                          )
-                        ],
+                            const SizedBox(
+                              width: 20.0,
+                              height: 25.0,
+                              child: VerticalDivider(
+                                color: Colors.grey,
+                                thickness: 1.5,
+                              ),
+                            ),
+                            const SizedBox(width: 10.0, height: 40.0),
+                            InkWell(
+                              highlightColor: Colors.green,
+                              splashColor: Colors.greenAccent,
+                              onTap: () {
+                                // 點擊事件處理
+                              },
+                              child: Container(
+                                width: 20,
+                                height: 20,
+                                color: Colors.green,
+                              ),
+                              // ),
+                            ),
+                            const SizedBox(width: 10.0, height: 40.0),
+                            InkWell(
+                              highlightColor: Colors.blue,
+                              splashColor: Colors.blueAccent,
+                              onTap: () {
+                                // 點擊事件處理
+                              },
+                              child: Container(
+                                width: 20,
+                                height: 20,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Row(
                         children: [
@@ -410,58 +475,85 @@ class DetailPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 10.0, height: 40.0),
-                          Container(
-                            width: 35,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 97, 95, 95),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'S',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _onButton1Pressed();
+                              });
+                            },
+                            child: Container(
+                              width: 35,
+                              height: 28,
+                              decoration: BoxDecoration(
+                                color: _button1State
+                                    ? const Color.fromARGB(255, 180, 180, 177)
+                                    : const Color.fromARGB(255, 97, 95, 95),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'S',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                           const SizedBox(width: 10.0, height: 40.0),
-                          Container(
-                            width: 35,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 97, 95, 95),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'M',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _onButton2Pressed();
+                              });
+                            },
+                            child: Container(
+                              width: 35,
+                              height: 28,
+                              decoration: BoxDecoration(
+                                color: _button2State
+                                    ? const Color.fromARGB(255, 180, 180, 177)
+                                    : const Color.fromARGB(255, 97, 95, 95),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'M',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                           const SizedBox(width: 10.0, height: 40.0),
-                          Container(
-                            width: 35,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 97, 95, 95),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'L',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _onButton3Pressed();
+                              });
+                            },
+                            child: Container(
+                              width: 35,
+                              height: 28,
+                              decoration: BoxDecoration(
+                                color: _button3State
+                                    ? const Color.fromARGB(255, 180, 180, 177)
+                                    : const Color.fromARGB(255, 97, 95, 95),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'L',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -496,49 +588,59 @@ class DetailPage extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        color:
-                                            const Color.fromARGB(255, 0, 0, 0),
-                                        borderRadius:
-                                            BorderRadius.circular(360),
-                                      ),
-                                      child: const Center(
-                                        child: Text(
-                                          '-',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                    TextButton(
+                                      onPressed: () {
+                                        _decreaseCounter();
+                                      },
+                                      child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 0, 0, 0),
+                                          borderRadius:
+                                              BorderRadius.circular(360),
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            '-',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                     Container(
                                       color: Colors.transparent,
-                                      child: const Text('1',
-                                          style: TextStyle(
+                                      child: Text('$_counter',
+                                          style: const TextStyle(
                                             fontSize: 18.0,
                                           )),
                                     ),
-                                    Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        color:
-                                            const Color.fromARGB(255, 0, 0, 0),
-                                        borderRadius:
-                                            BorderRadius.circular(360),
-                                      ),
-                                      child: const Center(
-                                        child: Text(
-                                          '+',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                    TextButton(
+                                      onPressed: () {
+                                        _incrementCounter();
+                                      },
+                                      child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 0, 0, 0),
+                                          borderRadius:
+                                              BorderRadius.circular(360),
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            '+',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ),
