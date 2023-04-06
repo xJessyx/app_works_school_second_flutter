@@ -301,7 +301,6 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   int _counter = 0;
-  bool _isPressed = false;
   bool _button1State = false;
   bool _button2State = false;
   bool _button3State = false;
