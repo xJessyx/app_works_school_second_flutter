@@ -401,12 +401,17 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   int _counter = 0;
-  late Future<Product> _productFuture;
+  // ignore: unused_field
+  int _selectSizeIndex = -1;
+  // ignore: unused_field
+  int _selectColorIndex = -1;
 
+  late Future<Product> _productFuture;
   @override
   void initState() {
     super.initState();
     _productFuture = _getDetailPages();
+    selectedColorList = List.filled(5, false);
   }
 
   Future<Product> _getDetailPages() async {
@@ -444,6 +449,9 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   int selectedButtonIndex = -1;
+  List<bool> selectedColorList = [];
+  int selectedColorIndex = -1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -473,10 +481,10 @@ class _DetailPageState extends State<DetailPage> {
               );
             } else {
               final result = snapshot.data;
+
               logger.fine("result!.title = ${result!.title}");
               logger.fine('snapshot.data= ${snapshot.data}');
-              List<bool> selectedList =
-                  List.filled(result.colors.length, false);
+
               return ListView(
                 children: [
                   Padding(
@@ -556,40 +564,52 @@ class _DetailPageState extends State<DetailPage> {
                                       children: result.colors
                                           .asMap()
                                           .map((index, value) => MapEntry(
-                                                index,
-                                                ChoiceChip(
-                                                  label: const Text(''),
-                                                  selected: selectedList[index],
-                                                  onSelected: (selected) {
-                                                    setState(() {
-                                                      selectedList[index] =
-                                                          selected;
-                                                    });
-                                                  },
-                                                  backgroundColor: Color(
-                                                      int.parse(value.code,
-                                                              radix: 16) +
-                                                          0xFF000000),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            0),
-                                                  ),
-                                                  labelPadding: EdgeInsets.zero,
-                                                  padding: EdgeInsets.zero,
-                                                  avatar: Container(
-                                                    width: 24,
-                                                    height: 24,
-                                                    color: Color(int.parse(
-                                                            value.code,
+                                              index,
+                                              ChoiceChip(
+                                                label: const Text(''),
+                                                selected:
+                                                    selectedColorIndex == index,
+                                                onSelected: (selected) {
+                                                  setState(() {
+                                                    selectedColorIndex =
+                                                        selected ? index : -1;
+
+                                                    _selectColorIndex =
+                                                        selectedColorIndex;
+                                                  });
+                                                },
+                                                backgroundColor: Color(
+                                                    int.parse(value.code,
                                                             radix: 16) +
                                                         0xFF000000),
-                                                  ),
+                                                shape: RoundedRectangleBorder(
+                                                  side: selectedColorIndex ==
+                                                          index
+                                                      ? const BorderSide(
+                                                          color: Color.fromARGB(
+                                                              255, 88, 21, 43),
+                                                          width: 1)
+                                                      : const BorderSide(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(0),
                                                 ),
-                                              ))
+                                                labelPadding: EdgeInsets.zero,
+                                                padding: EdgeInsets.zero,
+                                                avatar: Container(
+                                                  width: 24,
+                                                  height: 24,
+                                                  color: Color(int.parse(
+                                                          value.code,
+                                                          radix: 16) +
+                                                      0xFF000000),
+                                                ),
+                                              )))
                                           .values
                                           .toList(),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -623,6 +643,7 @@ class _DetailPageState extends State<DetailPage> {
                                           return InkWell(
                                             onTap: () {
                                               setState(() {
+                                                _selectSizeIndex = index;
                                                 selectedButtonIndex = index;
                                               });
                                             },
@@ -765,7 +786,42 @@ class _DetailPageState extends State<DetailPage> {
                                               255, 28, 28, 28),
                                         ),
                                         onPressed: () {
-                                          // 按鈕被點擊時要執行的程式碼
+                                          String dialogText = "";
+                                          // ignore: unnecessary_null_comparison
+                                          if (_counter > 0 &&
+                                              // ignore: unnecessary_null_comparison
+                                              _selectColorIndex != -1 &&
+                                              // ignore: unnecessary_null_comparison
+                                              _selectSizeIndex != -1) {
+                                            dialogText = '已加入購物車';
+                                          } else if (_selectColorIndex == -1 &&
+                                              _selectSizeIndex == -1 &&
+                                              _counter == 0) {
+                                            dialogText = '請點選規格';
+                                          } else if (_selectColorIndex == -1) {
+                                            dialogText = '請選擇顏色';
+                                          } else if (_selectSizeIndex == -1) {
+                                            dialogText = '請選擇尺寸';
+                                          } else if (_counter == 0) {
+                                            dialogText = '數量不得為０';
+                                          }
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(dialogText),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: const Text('確定'),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
                                         },
                                         child: const Text('加入購物車',
                                             style: TextStyle(
